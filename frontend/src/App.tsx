@@ -1,11 +1,15 @@
 import React, { FC } from 'react';
-import './App.css';
+import './assets/scss/main.scss';
+import MainPage from './pages/MainPage';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const App: FC = () => {
    return (
-      <div className="App">
-         ye
-      </div>
+      <BrowserRouter>
+         <Routes>
+            <Route path='/' element={<MainPage />} />
+         </Routes>
+      </BrowserRouter>
    );
 }
 
