@@ -4,6 +4,7 @@ import { ExportOutlined } from '@ant-design/icons';
 import styles from './MainPage.module.scss';
 import { Link } from 'react-router-dom';
 import { IMenuItem } from '../types/menu.types';
+import EmotionPicker from '../components/UI/EmotionPicker';
 
 const { Header, Content, Footer } = Layout;
 
@@ -21,7 +22,7 @@ const MainPage: FC = () => {
             <Menu className={styles.menu} items={headerItems} mode='horizontal'/>
          </Header>
          <Content className={styles['main-page__content']}>
-
+            <EmotionPicker />
          </Content>
          <Footer style={{ textAlign: 'center' }}>
             Cinema Psyho ©2025 Created by LizKa2091 <Link to='https://github.com/LizKa2091'>Github <ExportOutlined /></Link>

@@ -1,7 +1,11 @@
 import React, { FC, useState } from 'react';
 import { IEmotionItem } from '../../types/menu.types';
-import { Select, Form, Button } from 'antd';
-import { useForm } from 'react-hook-form';
+import { Select, Button } from 'antd';
+import { useForm, Controller } from 'react-hook-form';
+
+interface IFormData {
+   moods: string[];
+}
 
 const emotions: IEmotionItem[] = [
    { value: 'tension', label: 'Тревога/Напряжение', emoji: '😨', color: '#e94560' },
@@ -14,36 +18,52 @@ const emotions: IEmotionItem[] = [
    { value: 'absurd', label: 'Абсурд/Чёрный юмор', emoji: '🤡', color: '#f368e0' }
 ];
 
-const EmotionPicker: FC = () => {
-   const [selectedMoods, setSelectedMoods] = useState<string[]>([]);
-   const { handleSubmit, setValue } = useForm();
+const EmotionPicker: FC = () => { 
+   const [selectedMoods, setSelectedMoods] = useState<IEmotionItem[]>([]);
+   const [isDisplayingMoods, setIsDisplayingMoods] = useState<boolean>(false);
 
-   const onSubmit = (data: any) => {
-      setSelectedMoods(data.mood)
+   const { handleSubmit, control } = useForm<IFormData>();
+
+   const onSubmit = (data: IFormData) => {
+      if (data.moods && data.moods.length > 0) {
+         const selected = emotions.filter(emotion => data.moods.includes(emotion.value));
+         setSelectedMoods(selected);
+         setIsDisplayingMoods(true);
+      }
    };
 
    return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-         <Form style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} onFinish={handleSubmit(onSubmit)}>
-            <Form.Item label="Какое у вас настроение?" name='mood' rules={[{ required: true, message: 'Выберите хотя бы одно настроение' }]}>
-               <Select mode="multiple" placeholder="Выберите настроение" options={emotions} style={{ minWidth: '250px' }}
-                  optionRender={(option) => (
-                     <span style={{ color: option.data.color }}>
-                        <span>{option.data.emoji}</span>
-                        {option.data.label}
-                     </span>
+      <>
+         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+               <Controller name="moods" control={control} rules={{ required: "Выберите хотя бы одно настроение" }} 
+                  render={({ field, fieldState }) => (
+                     <>
+                        <label>Какое у вас настроение?</label>
+                        <Select {...field} mode="multiple" placeholder="Выберите настроение"
+                           options={emotions.map(emotion => ({
+                              label: (
+                                 <span style={{ color: emotion.color }}>
+                                    {emotion.emoji} {emotion.label}
+                                 </span>
+                              ),
+                              value: emotion.value,
+                           }))}
+                           style={{ minWidth: '250px', marginBottom: '16px' }}
+                           onChange={(values) => {
+                              field.onChange(values);
+                              const selected = emotions.filter(emotion => values.includes(emotion.value));
+                              setSelectedMoods(selected);
+                           }}
+                        />
+                        {fieldState.error && <span style={{ color: 'red' }}>{fieldState.error.message}</span>}
+                     </>
                   )}
-                  onChange={(( value: any ) => setValue('mood', value))}
                />
-            </Form.Item>
-            <Button type='primary' htmlType='submit' style={{ width: '50%' }}>Применить</Button>
-         </Form>
-         {selectedMoods.length > 0 &&
-            selectedMoods.map((mood: string) => (
-               <p key={mood}>{mood}</p>
-            ))
-         }
-      </div>
+               <Button type='primary' htmlType='submit' style={{ width: '50%' }}>Применить</Button>
+            </form>
+         </div>
+      </>
    )
 }
 
