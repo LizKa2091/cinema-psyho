@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { IEmotionItem } from '../../types/menu.types';
 import { Select, Button } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
+import EmotionFrame from './EmotionFrame';
 
 interface IFormData {
    moods: string[];
@@ -63,6 +64,7 @@ const EmotionPicker: FC = () => {
                <Button type='primary' htmlType='submit' style={{ width: '50%' }}>Применить</Button>
             </form>
          </div>
+         {isDisplayingMoods && <EmotionFrame moods={selectedMoods} />}
       </>
    )
 }
