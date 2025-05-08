@@ -36,9 +36,9 @@ const EmotionPicker: FC = () => {
    };
 
    return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 50 }}>
          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
                <Controller name="moods" control={control} rules={{ required: "Выберите хотя бы одно настроение" }} 
                   render={({ field, fieldState }) => (
                      <>
@@ -71,16 +71,13 @@ const EmotionPicker: FC = () => {
          {isError && <p>Ошибка при загрузке фильмов</p>}
          <div>
             {isSuccess && data.films.length > 0 && (
-               <ul>
+               <ul style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', maxWidth: 720, gap: 20 }}>
                   {data?.films.map((filmItem: IFilmItem) => (
-                     <li key={filmItem.filmId}>
-                        <p>Название фильма: {filmItem.nameRu}</p>
-                        <p>Описание: {filmItem.description}</p>
+                     <li key={filmItem.filmId} style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', border: '1px solid #000', borderRadius: 12, padding: 15, listStyleType: 'none', gap: 5 }}>
+                        <p style={{ fontSize: '2rem', fontWeight: 700 }}>{filmItem.nameRu}</p>
+                        <p style={{ fontSize: '1.15rem' }}>Описание: {filmItem.description}</p>
                         {filmItem.filmLength ? <p>Длительность фильма: {filmItem.filmLength}</p> : null}
-                        <div>
-                           Постер фильма:
-                           <img src={filmItem.posterUrl} alt={filmItem.nameRu}/>
-                        </div>
+                        <img src={filmItem.posterUrl} alt={filmItem.nameRu} style={{ width: '100%', height: '100%', maxWidth: 420, maxHeight: 800 }}/>
                      </li>
                   ))}
                </ul>
