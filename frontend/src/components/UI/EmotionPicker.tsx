@@ -1,8 +1,9 @@
 import React, { FC, useState } from 'react';
-import { IEmotionItem } from '../../types/menu.types';
-import { Select, Button } from 'antd';
+import { IEmotionItem, IFilmItem } from '../../types/menu.types';
+import { Select, Button, Spin } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
 import EmotionFrame from './EmotionFrame';
+import { useFilms } from '../../hooks/useFilms';
 
 interface IFormData {
    moods: string[];
@@ -24,6 +25,7 @@ const EmotionPicker: FC = () => {
    const [isDisplayingMoods, setIsDisplayingMoods] = useState<boolean>(false);
 
    const { handleSubmit, control } = useForm<IFormData>();
+   const { data, isLoading, isError, isSuccess } = useFilms(selectedMoods.length > 0 ? selectedMoods[0].label : '');
 
    const onSubmit = (data: IFormData) => {
       if (data.moods && data.moods.length > 0) {
@@ -34,7 +36,7 @@ const EmotionPicker: FC = () => {
    };
 
    return (
-      <>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                <Controller name="moods" control={control} rules={{ required: "Выберите хотя бы одно настроение" }} 
@@ -65,7 +67,29 @@ const EmotionPicker: FC = () => {
             </form>
          </div>
          {isDisplayingMoods && <EmotionFrame moods={selectedMoods} />}
-      </>
+         {isLoading && <Spin size='large' style={{ top: '70%', left: '50%' }} />}
+         {isError && <p>Ошибка при загрузке фильмов</p>}
+         <div>
+            {isSuccess && data.films.length > 0 && (
+               <ul>
+                  {data?.films.map((filmItem: IFilmItem) => (
+                     <li key={filmItem.filmId}>
+                        <p>Название фильма: {filmItem.nameRu}</p>
+                        <p>Описание: {filmItem.description}</p>
+                        {filmItem.filmLength ? <p>Длительность фильма: {filmItem.filmLength}</p> : null}
+                        <div>
+                           Постер фильма:
+                           <img src={filmItem.posterUrl} alt={filmItem.nameRu}/>
+                        </div>
+                     </li>
+                  ))}
+               </ul>
+            )}
+            {isSuccess && data.films.length === 0 &&
+               <p>Ничего не найдено</p>
+            }            
+         </div>
+      </div>
    )
 }
 
