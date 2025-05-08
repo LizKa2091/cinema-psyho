@@ -25,7 +25,7 @@ const EmotionPicker: FC = () => {
    const [isDisplayingMoods, setIsDisplayingMoods] = useState<boolean>(false);
 
    const { handleSubmit, control } = useForm<IFormData>();
-   const { data, isLoading, isError, isSuccess } = useFilms(selectedMoods.length > 0 ? selectedMoods[0].label : '');
+   const { data, isLoading, isError, isSuccess } = useFilms(selectedMoods.length > 0 ? selectedMoods.map(mood => mood.label).join(',') : '');
 
    const onSubmit = (data: IFormData) => {
       if (data.moods && data.moods.length > 0) {
