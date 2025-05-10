@@ -1,11 +1,12 @@
 import React, { FC, useState } from 'react';
 import { IEmotionItem } from '../../types/menu.types';
 import { IFilmsItem } from '../../types/film.types';
-import { Select, Button, Spin } from 'antd';
+import { Select, Button, Spin, Flex, Card } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
 import EmotionFrame from './EmotionFrame';
 import { useFilms } from '../../hooks/useFilms';
 import { useNavigate } from 'react-router-dom';
+import { formatTime } from '../../utils/formatTime';
 
 interface IFormData {
    moods: string[];
@@ -39,57 +40,54 @@ const EmotionPicker: FC = () => {
    };
 
    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 50 }}>
-         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
-               <Controller name="moods" control={control} rules={{ required: "Выберите хотя бы одно настроение" }} 
-                  render={({ field, fieldState }) => (
-                     <>
-                        <label>Какое у вас настроение?</label>
-                        <Select {...field} mode="multiple" placeholder="Выберите настроение"
-                           options={emotions.map(emotion => ({
-                              label: (
-                                 <span style={{ color: emotion.color }}>
-                                    {emotion.emoji} {emotion.label}
-                                 </span>
-                              ),
-                              value: emotion.value,
-                           }))}
-                           style={{ minWidth: '250px', marginBottom: '16px' }}
-                           onChange={(values) => {
-                              field.onChange(values);
-                              const selected = emotions.filter(emotion => values.includes(emotion.value));
-                              setSelectedMoods(selected);
-                           }}
-                        />
-                        {fieldState.error && <span style={{ color: 'red' }}>{fieldState.error.message}</span>}
-                     </>
-                  )}
-               />
-               <Button type='primary' htmlType='submit' style={{ width: '50%' }}>Применить</Button>
-            </form>
-         </div>
+      <Flex vertical gap='middle'>
+         <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
+            <Controller name="moods" control={control} rules={{ required: "Выберите хотя бы одно настроение" }} 
+               render={({ field, fieldState }) => (
+                  <>
+                     <label>Какое у вас настроение?</label>
+                     <Select {...field} mode="multiple" placeholder="Выберите настроение"
+                        options={emotions.map(emotion => ({
+                           label: (
+                              <span style={{ color: emotion.color }}>
+                                 {emotion.emoji} {emotion.label}
+                              </span>
+                           ),
+                           value: emotion.value,
+                        }))}
+                        style={{ minWidth: '250px', marginBottom: '16px' }}
+                        onChange={(values) => {
+                           field.onChange(values);
+                           const selected = emotions.filter(emotion => values.includes(emotion.value));
+                           setSelectedMoods(selected);
+                        }}
+                     />
+                     {fieldState.error && <span style={{ color: 'red' }}>{fieldState.error.message}</span>}
+                  </>
+               )}
+            />
+            <Button type='primary' htmlType='submit'>Применить</Button>
+         </form>
          {isDisplayingMoods && <EmotionFrame moods={selectedMoods} />}
          {isLoading && <Spin size='large' style={{ top: '70%', left: '50%' }} />}
          {isError && <p>Ошибка при загрузке фильмов</p>}
-         <div>
-            {isSuccess && data.films.length > 0 && (
-               <ul style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', maxWidth: 720, gap: 20 }}>
-                  {data?.films.map((filmItem: IFilmsItem) => (
-                     <li key={filmItem.filmId} onClick={() => navigate(`/film/${filmItem.filmId}`)} style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', border: '1px solid #000', borderRadius: 12, padding: 15, listStyleType: 'none', gap: 5, cursor: 'pointer' }}>
-                        <p style={{ fontSize: '2rem', fontWeight: 700 }}>{filmItem.nameRu}</p>
-                        <p style={{ fontSize: '1.15rem' }}>Описание: {filmItem.description}</p>
-                        {filmItem.filmLength ? <p>Длительность фильма: {filmItem.filmLength}</p> : null}
-                        <img src={filmItem.posterUrl} alt={filmItem.nameRu} style={{ width: '100%', height: '100%', maxWidth: 420, maxHeight: 800 }}/>
-                     </li>
-                  ))}
-               </ul>
-            )}
-            {isSuccess && data.films.length === 0 &&
-               <p>Ничего не найдено</p>
-            }            
-         </div>
-      </div>
+         {isSuccess && data.films.length > 0 && (
+            <Flex justify='center' vertical align='center' gap='middle' style={{ maxWidth: 720 }}>
+               {data?.films.map((filmItem: IFilmsItem) => (
+                  <Card key={filmItem.filmId} title={<span style={{ fontSize: '2rem' }}>{filmItem.nameRu}</span>} onClick={() => navigate(`/film/${filmItem.filmId}`)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid #000', borderRadius: 12, fontSize: '1.15rem', cursor: 'pointer' }}>
+                     <p>{filmItem.description}</p>
+                     {filmItem.filmLength ? <p>Длительность фильма: {formatTime(filmItem.filmLength)}</p> : null}
+                     <Flex justify='center' style={{ marginTop: 24 }}>
+                        <img src={filmItem.posterUrl} alt={filmItem.nameRu} style={{ width: '100%', height: '100%', maxWidth: 420, maxHeight: 800}}/>
+                     </Flex>
+                  </Card>
+               ))}
+            </Flex>
+         )}
+         {isSuccess && data.films.length === 0 &&
+            <p>Ничего не найдено</p>
+         }            
+      </Flex>
    )
 }
 

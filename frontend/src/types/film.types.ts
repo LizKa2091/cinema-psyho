@@ -18,7 +18,7 @@ export interface IFilmItem {
    webUrl: string;
    posterUrl: string;
    year: number;
-   filmLength: number;
+   filmLength: string;
    description: string;
    facts: string[];
 }
