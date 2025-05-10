@@ -1,8 +1,9 @@
 import React, { FC, useState } from 'react';
-import { IEmotionItem } from '../../types/menu.types';
-import { Select, Button } from 'antd';
+import { IEmotionItem, IFilmItem } from '../../types/menu.types';
+import { Select, Button, Spin } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
 import EmotionFrame from './EmotionFrame';
+import { useFilms } from '../../hooks/useFilms';
 
 interface IFormData {
    moods: string[];
@@ -24,6 +25,7 @@ const EmotionPicker: FC = () => {
    const [isDisplayingMoods, setIsDisplayingMoods] = useState<boolean>(false);
 
    const { handleSubmit, control } = useForm<IFormData>();
+   const { data, isLoading, isError, isSuccess } = useFilms(selectedMoods.length > 0 ? selectedMoods.map(mood => mood.label).join(',') : '');
 
    const onSubmit = (data: IFormData) => {
       if (data.moods && data.moods.length > 0) {
@@ -34,9 +36,9 @@ const EmotionPicker: FC = () => {
    };
 
    return (
-      <>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 50 }}>
          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
                <Controller name="moods" control={control} rules={{ required: "Выберите хотя бы одно настроение" }} 
                   render={({ field, fieldState }) => (
                      <>
@@ -65,7 +67,26 @@ const EmotionPicker: FC = () => {
             </form>
          </div>
          {isDisplayingMoods && <EmotionFrame moods={selectedMoods} />}
-      </>
+         {isLoading && <Spin size='large' style={{ top: '70%', left: '50%' }} />}
+         {isError && <p>Ошибка при загрузке фильмов</p>}
+         <div>
+            {isSuccess && data.films.length > 0 && (
+               <ul style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', maxWidth: 720, gap: 20 }}>
+                  {data?.films.map((filmItem: IFilmItem) => (
+                     <li key={filmItem.filmId} style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', border: '1px solid #000', borderRadius: 12, padding: 15, listStyleType: 'none', gap: 5 }}>
+                        <p style={{ fontSize: '2rem', fontWeight: 700 }}>{filmItem.nameRu}</p>
+                        <p style={{ fontSize: '1.15rem' }}>Описание: {filmItem.description}</p>
+                        {filmItem.filmLength ? <p>Длительность фильма: {filmItem.filmLength}</p> : null}
+                        <img src={filmItem.posterUrl} alt={filmItem.nameRu} style={{ width: '100%', height: '100%', maxWidth: 420, maxHeight: 800 }}/>
+                     </li>
+                  ))}
+               </ul>
+            )}
+            {isSuccess && data.films.length === 0 &&
+               <p>Ничего не найдено</p>
+            }            
+         </div>
+      </div>
    )
 }
 
