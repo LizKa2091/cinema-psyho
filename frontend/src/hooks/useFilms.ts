@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { IFilmItem, IFilmResponse } from '../types/menu.types';
+import { IFilmsItem, IFilmsResponse } from '../types/film.types';
 
-const fetchFilms = async (keyWords: string): Promise<IFilmResponse | { films: any }> => {
+const fetchFilms = async (keyWords: string): Promise<IFilmsResponse | { films: any }> => {
    const keyWordsArr = [...keyWords.split(/[,/]/)];
-   let allFilms: IFilmItem[] = [];
+   let allFilms: IFilmsItem[] = [];
    
    const apiKey = process.env.REACT_APP_KINOPOISK_API_KEY;
    if (!apiKey) throw new Error(`не задан api ключ`);
