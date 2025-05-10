@@ -5,6 +5,7 @@ import { Select, Button, Spin } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
 import EmotionFrame from './EmotionFrame';
 import { useFilms } from '../../hooks/useFilms';
+import { useNavigate } from 'react-router-dom';
 
 interface IFormData {
    moods: string[];
@@ -24,6 +25,7 @@ const emotions: IEmotionItem[] = [
 const EmotionPicker: FC = () => { 
    const [selectedMoods, setSelectedMoods] = useState<IEmotionItem[]>([]);
    const [isDisplayingMoods, setIsDisplayingMoods] = useState<boolean>(false);
+   const navigate = useNavigate();
 
    const { handleSubmit, control } = useForm<IFormData>();
    const { data, isLoading, isError, isSuccess } = useFilms(selectedMoods.length > 0 ? selectedMoods.map(mood => mood.label).join(',') : '');
@@ -74,7 +76,7 @@ const EmotionPicker: FC = () => {
             {isSuccess && data.films.length > 0 && (
                <ul style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', maxWidth: 720, gap: 20 }}>
                   {data?.films.map((filmItem: IFilmsItem) => (
-                     <li key={filmItem.filmId} style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', border: '1px solid #000', borderRadius: 12, padding: 15, listStyleType: 'none', gap: 5 }}>
+                     <li key={filmItem.filmId} onClick={() => navigate(`/film/${filmItem.filmId}`)} style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', border: '1px solid #000', borderRadius: 12, padding: 15, listStyleType: 'none', gap: 5, cursor: 'pointer' }}>
                         <p style={{ fontSize: '2rem', fontWeight: 700 }}>{filmItem.nameRu}</p>
                         <p style={{ fontSize: '1.15rem' }}>Описание: {filmItem.description}</p>
                         {filmItem.filmLength ? <p>Длительность фильма: {filmItem.filmLength}</p> : null}
