@@ -26,3 +26,14 @@ export interface IFilmItem {
 export interface IFilmResponse {
    data: IFilmItem;
 }
+
+export interface IFilmAlike {
+   filmId: number;
+   nameRu: string;
+   posterUrl: string;
+}
+
+export interface IFilmsAlikeResponse {
+   total: number;
+   items: IFilmAlike[];
+}
