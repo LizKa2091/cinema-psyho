@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Layout, Menu } from 'antd';
 import { ExportOutlined } from '@ant-design/icons';
 import styles from './MainPage.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IMenuItem } from '../types/menu.types';
 import EmotionPicker from '../components/UI/EmotionPicker';
 
@@ -15,10 +15,12 @@ const headerItems: IMenuItem[] = [
 ];
 
 const MainPage: FC = () => {
+   const navigate = useNavigate();
+
    return (
       <Layout>
          <Header className={styles.header}>
-            <div className={styles.logo}>Cinema Psyho</div>
+            <div className={styles.logo} onClick={() => navigate('/')}>Cinema Psyho</div>
             <Menu className={styles.menu} items={headerItems} mode='horizontal'/>
          </Header>
          <Content className={styles['main-page__content']}>
