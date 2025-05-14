@@ -7,6 +7,7 @@ import EmotionFrame from './EmotionFrame';
 import { useFilms } from '../../hooks/useFilms';
 import { useNavigate } from 'react-router-dom';
 import { formatTime } from '../../utils/formatTime';
+import styles from './EmotionPicker.module.scss';
 
 interface IFormData {
    moods: string[];
@@ -41,7 +42,7 @@ const EmotionPicker: FC = () => {
 
    return (
       <Flex vertical gap='middle'>
-         <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
+         <form onSubmit={handleSubmit(onSubmit)} className={styles.emotionContainer}>
             <Controller name="moods" control={control} rules={{ required: "Выберите хотя бы одно настроение" }} 
                render={({ field, fieldState }) => (
                   <>
@@ -55,30 +56,30 @@ const EmotionPicker: FC = () => {
                            ),
                            value: emotion.value,
                         }))}
-                        style={{ minWidth: '250px', marginBottom: '16px' }}
+                        className={styles.emotionSelect}
                         onChange={(values) => {
                            field.onChange(values);
                            const selected = emotions.filter(emotion => values.includes(emotion.value));
                            setSelectedMoods(selected);
                         }}
                      />
-                     {fieldState.error && <span style={{ color: 'red' }}>{fieldState.error.message}</span>}
+                     {fieldState.error && <span className={styles.emotionError}>{fieldState.error.message}</span>}
                   </>
                )}
             />
             <Button type='primary' htmlType='submit'>Применить</Button>
          </form>
          {isDisplayingMoods && <EmotionFrame moods={selectedMoods} />}
-         {isLoading && <Spin size='large' style={{ top: '70%', left: '50%' }} />}
+         {isLoading && <Spin size='large' className={styles.emotionSpin} />}
          {isError && <p>Ошибка при загрузке фильмов</p>}
          {isSuccess && data.films.length > 0 && (
-            <Flex justify='center' vertical align='center' gap='middle' style={{ maxWidth: 720 }}>
+            <Flex justify='center' vertical align='center' gap='middle' className={styles.filmContainer}>
                {data?.films.map((filmItem: IFilmsItem) => (
-                  <Card key={filmItem.filmId} title={<span style={{ fontSize: '2rem' }}>{filmItem.nameRu}</span>} onClick={() => navigate(`/film/${filmItem.filmId}`)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid #000', borderRadius: 12, fontSize: '1.15rem', cursor: 'pointer' }}>
+                  <Card key={filmItem.filmId} title={<span className={styles.filmTitle}>{filmItem.nameRu}</span>} className={styles.filmCard} onClick={() => navigate(`/film/${filmItem.filmId}`)}>
                      <p>{filmItem.description}</p>
                      {filmItem.filmLength ? <p>Длительность фильма: {formatTime(filmItem.filmLength)}</p> : null}
-                     <Flex justify='center' style={{ marginTop: 24 }}>
-                        <img src={filmItem.posterUrl} alt={filmItem.nameRu} style={{ width: '100%', height: '100%', maxWidth: 420, maxHeight: 800}}/>
+                     <Flex justify='center' className={styles.filmImgContainer}>
+                        <img src={filmItem.posterUrl} alt={filmItem.nameRu} className={styles.filmImg}/>
                      </Flex>
                   </Card>
                ))}

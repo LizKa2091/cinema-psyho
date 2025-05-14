@@ -6,7 +6,7 @@ import { ArrowLeftOutlined, ExportOutlined } from '@ant-design/icons';
 import Recommendations from '../components/UI/Recommendations';
 import { Footer, Header } from 'antd/es/layout/layout';
 import { IMenuItem } from '../types/menu.types';
-import './FilmPage.scss';
+import styles from './FilmPage.module.scss';
 
 const headerItems: IMenuItem[] = [
    { label: 'Главная', key: 'home' },
@@ -25,19 +25,19 @@ const FilmPage: FC = () => {
 
    return (
       <Layout>
-         <Header className='header'>
-            <div className='logo' onClick={ () => navigate('/') }>Cinema Psyho</div>
-            <Menu className='menu' items={headerItems} mode='horizontal'/>
+         <Header className={styles.header}>
+            <div className={styles.logo} onClick={ () => navigate('/') }>Cinema Psyho</div>
+            <Menu className={styles.menu} items={headerItems} mode='horizontal'/>
          </Header>
-         <Flex vertical gap='large' style={{ margin: '0 auto', paddingBottom: 25, maxWidth: 720 }}>
-            <Link to='/' style={{ color: '#000', position: 'absolute', top: 10, left: 10 }}>
-               <ArrowLeftOutlined style={{ marginRight: 10 }} />
+         <Flex vertical gap='large' className={styles.main}>
+            <Link to='/' className={styles.mainButton}>
+               <ArrowLeftOutlined className={styles.arrowIcon} />
                Вернуться назад
             </Link>
             <FilmItem filmId={filmId} />
             <Recommendations filmId={filmId}/>
          </Flex>
-         <Footer style={{ textAlign: 'center' }}>
+         <Footer className={styles.footer}>
             Cinema Psyho ©2025 Created by LizKa2091 <Link to='https://github.com/LizKa2091'>Github <ExportOutlined /></Link>
          </Footer>
       </Layout>

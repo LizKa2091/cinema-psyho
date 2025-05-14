@@ -26,7 +26,7 @@ const MainPage: FC = () => {
          <Content className={styles['main-page__content']}>
             <EmotionPicker />
          </Content>
-         <Footer style={{ textAlign: 'center' }}>
+         <Footer className={styles.footer}>
             Cinema Psyho ©2025 Created by LizKa2091 <Link to='https://github.com/LizKa2091'>Github <ExportOutlined /></Link>
          </Footer>
       </Layout>

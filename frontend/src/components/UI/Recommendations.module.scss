@@ -1,0 +1,17 @@
+.container {
+   cursor: pointer;
+}
+.error {
+   color: #ff0000;
+}
+.film {
+   &Img {
+      width: 100%; 
+      height: 320px;
+   }
+   &Name {
+      font-size: 1.15rem; 
+      font-weight: 700; 
+      text-align: center;
+   }
+}

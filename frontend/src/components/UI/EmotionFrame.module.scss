@@ -1,0 +1,22 @@
+.emotion {
+   &Container {
+      position: absolute; 
+      top: 0; 
+      left: 0;
+      width: 100dvw;
+      height: 100dvh;
+      z-index: 1;
+   }
+   &Label {
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 100px;
+   }
+   &Spin {
+      top: 70%;
+      left: 50%;
+   }
+}
