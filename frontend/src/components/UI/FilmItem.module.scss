@@ -1,0 +1,17 @@
+.film {
+   &Error {
+      font-size: 2rem; 
+      color: #ff0000; 
+      margin-bottom: 10px;
+   }
+   &Back {
+      color: #000;
+   }
+   &Container {
+      margin-top: 50px;
+   }
+   &Title {
+      font-size: 2rem; 
+      font-weight: 700;
+   }
+}

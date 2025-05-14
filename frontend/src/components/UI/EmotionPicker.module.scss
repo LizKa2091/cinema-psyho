@@ -1,0 +1,48 @@
+.emotion {
+   &Container {
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      gap: 5px;
+   }
+   &Select {
+      min-width: 250px; 
+      margin-bottom: 16px;
+   }
+   &Error {
+      color: #ff0000;
+   }
+   &Spin {
+      top: 70%; 
+      left: 50%;
+      transform: translateX(-50%);
+   }
+}
+
+.film {
+   &Container {
+      max-width: 720px;
+   }
+   &Title {
+      font-size: 2rem;
+   }
+   &Card {
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      border: 1px solid #000; 
+      border-radius: 12px;
+      font-size: 1.15rem; 
+      cursor: pointer;
+   }
+   &Img {
+      width: 100%;
+      height: 100%;
+      max-width: 420px;
+      max-height: 800px;
+
+      &Container {
+         margin-top: 24px;
+      }
+   }
+}

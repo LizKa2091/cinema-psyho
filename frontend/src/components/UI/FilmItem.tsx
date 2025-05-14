@@ -3,6 +3,7 @@ import { useFilm } from '../../hooks/useFilm';
 import { Link } from 'react-router-dom';
 import { Button, Flex } from 'antd';
 import { formatTime } from '../../utils/formatTime';
+import styles from './FilmItem.module.scss';
 
 interface IFilmItemProps {
    filmId: string;
@@ -27,13 +28,13 @@ const FilmItem: FC<IFilmItemProps> = ({ filmId }) => {
       <Flex vertical wrap justify='center' align='center' gap='middle'>
          {isError &&
             <>
-               <p style={{ fontSize: '2rem', color: '#ff0000', marginBottom: 10 }}>Ошибка, попробуйте другой фильм</p>
-               <Link to='/' style={{ color: '#000' }}>Вернуться назад</Link>
+               <p className={styles.filmError}>Ошибка, попробуйте другой фильм</p>
+               <Link to='/' className={styles.filmBack}>Вернуться назад</Link>
             </>
          }
          {isSuccess && data &&
-            <Flex justify='center' vertical gap={10} align='center' style={{ marginTop: 50 }}>
-               <p style={{ fontSize: '2rem', fontWeight: 700 }}>{data.data.nameRu}</p>
+            <Flex justify='center' vertical gap={10} align='center' className={styles.filmContainer}>
+               <p className={styles.filmTitle}>{data.data.nameRu}</p>
                <p>{data.data.description}</p>
                <p>{data.data.year} год</p>
                {data.data.filmLength ? <p>Длительность фильма: {formatTime(data.data.filmLength)}</p> : null}
