@@ -22,6 +22,12 @@ interface IMainLayoutProps {
 const MainLayout: FC<IMainLayoutProps> = ({ children }) => {
    const navigate = useNavigate();
 
+   const menuItems = headerItems.map((item: IMenuItem) => ({
+      key: item.key,
+      label: item.label,
+      onClick: () => handleMenuClick(item.path),
+   }));
+
    const handleMenuClick = (path: string) => {
       navigate(path);
    };
@@ -30,13 +36,7 @@ const MainLayout: FC<IMainLayoutProps> = ({ children }) => {
       <Layout>
          <Header className={styles.header}>
             <div className={styles.logo} onClick={() => navigate('/')}>Cinema Psyho</div>
-            <Menu className={styles.menu} mode='horizontal'>
-               {headerItems.map((item: IMenuItem)=> (
-                  <Menu.Item key={item.key} onClick={() => handleMenuClick(item.path)}>
-                     {item.label}
-                  </Menu.Item>
-               ))}
-            </Menu>
+            <Menu className={styles.menu} mode='horizontal' items={menuItems} />
          </Header>
          <Content>
             {children}
