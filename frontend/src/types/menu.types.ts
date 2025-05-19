@@ -1,6 +1,7 @@
 export interface IMenuItem {
    label: string;
    key: string;
+   path: string;
 }
 
 export interface IEmotionItem {

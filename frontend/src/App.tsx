@@ -1,16 +1,21 @@
 import React, { FC } from 'react';
 import './assets/scss/main.scss';
-import MainPage from './pages/MainPage';
+import Home from './pages/Home';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import FilmPage from './pages/FilmPage';
+import Film from './pages/Film';
+import MainLayout from './components/layout/MainLayout';
+import Profile from './pages/Profile';
 
 const App: FC = () => {
    return (
       <BrowserRouter>
-         <Routes>
-            <Route path='/' element={<MainPage />} />
-            <Route path='/film/:id' element={<FilmPage />} />
-         </Routes>
+         <MainLayout>
+            <Routes>
+               <Route path='/' element={<Home />} />
+               <Route path='/film/:id' element={<Film />} />
+               <Route path='/profile' element={<Profile />} />
+            </Routes>
+         </MainLayout>
       </BrowserRouter>
    );
 }

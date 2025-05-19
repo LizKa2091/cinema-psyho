@@ -5,6 +5,8 @@ export interface IFilmsItem {
    description: string;
    filmLength: string;
    posterUrl: string;
+   isWatchLater?: boolean;
+   isDisliked?: boolean;
 }
 
 export interface IFilmsResponse {
