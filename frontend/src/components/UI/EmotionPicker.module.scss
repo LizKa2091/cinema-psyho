@@ -1,3 +1,9 @@
+$emotion-error: #ff0000;
+$card-border-color: #000;
+$card-bg: #000;
+$card-text: #ffffff80;
+$cart-dots: #fff;
+
 .emotion {
    &Container {
       display: flex; 
@@ -10,7 +16,7 @@
       margin-bottom: 16px;
    }
    &Error {
-      color: #ff0000;
+      color: $emotion-error;
    }
    &Spin {
       top: 70%; 
@@ -25,15 +31,46 @@
    }
    &Title {
       font-size: 2rem;
+      color: $card-text;
    }
    &Card {
       display: flex; 
       flex-direction: column; 
-      align-items: center; 
-      border: 1px solid #000; 
-      border-radius: 12px;
-      font-size: 1.15rem; 
+      align-items: center;
+      border: 1px solid $card-border-color; 
+      border-radius: 8px;
+      background: $card-bg;
+      font-size: 1.15rem;
+      color: $card-text;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 8px #00000030;
+      padding: 15px;
       cursor: pointer;
+
+      &::before, &::after {
+         content: '';
+         position: absolute;
+         top: 0;
+         bottom: 0;
+         width: 20px;
+         background: repeating-linear-gradient(
+            to bottom,
+            $card-border-color,
+            $card-border-color 10px,
+            $cart-dots 10px,
+            $cart-dots 20px
+         );
+         background-size: 100% 20px;
+      }
+      &::before {
+         left: 0;
+         border-radius: 8px 0 0 8px;
+      }
+      &::after {
+         right: 0;
+         border-radius: 0 8px 8px 0;
+      }
    }
    &Img {
       width: 100%;
@@ -44,5 +81,8 @@
       &Container {
          margin-top: 24px;
       }
+   }
+   &ButtonsContainer {
+      margin: 10px 0;
    }
 }
