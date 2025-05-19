@@ -1,21 +1,24 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { IEmotionItem } from '../../types/menu.types';
 import { IFilmsItem } from '../../types/film.types';
-import { Select, Button, Spin, Flex, Card } from 'antd';
+import { Select, Button, Spin, Flex, Card, Checkbox } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
-import EmotionFrame from './EmotionFrame';
 import { useFilms } from '../../hooks/useFilms';
 import { useNavigate } from 'react-router-dom';
 import { formatTime } from '../../utils/formatTime';
 import styles from './EmotionPicker.module.scss';
+import WatchLaterButton from './buttons/WatchLaterButton';
+import DislikeButton from './buttons/DislikeButton';
+import { checkFilmStatus } from '../../utils/filmsList';
 
 interface IFormData {
    moods: string[];
+   checkboxes: string[];
 }
 
 const emotions: IEmotionItem[] = [
    { value: 'tension', label: 'Тревога/Напряжение', emoji: '😨', color: '#e94560' },
-   { value: 'nostalgia', label: 'Ностальгия', emoji: '🕰️', color: '#06d6a0' },
+   { value: 'nostalgia', label: 'Ностальгия', emoji: '🕰', color: '#06d6a0' },
    { value: 'euphoria', label: 'Эйфория/Восторг', emoji: '🤩', color: '#ffd166' },
    { value: 'melancholy', label: 'Меланхолия', emoji: '☁️', color: '#9c88ff' },
    { value: 'rage', label: 'Ярость/Бунт', emoji: '💥', color: '#ff6b6b' },
@@ -24,20 +27,47 @@ const emotions: IEmotionItem[] = [
    { value: 'absurd', label: 'Абсурд/Чёрный юмор', emoji: '🤡', color: '#f368e0' }
 ];
 
+const checkboxOptions = ['Скрыть, что буду смотреть позже', 'Скрыть непонравившиеся фильмы'];
+
 const EmotionPicker: FC = () => { 
    const [selectedMoods, setSelectedMoods] = useState<IEmotionItem[]>([]);
-   const [isDisplayingMoods, setIsDisplayingMoods] = useState<boolean>(false);
+   const [selectedCheckboxes, setSelectedCheckboxes] = useState<string[]>([]);
+   const [filteredFilms, setFilteredFilms] = useState<IFilmsItem[]>([]);
+
    const navigate = useNavigate();
 
    const { handleSubmit, control } = useForm<IFormData>();
    const { data, isLoading, isError, isSuccess } = useFilms(selectedMoods.length > 0 ? selectedMoods.map(mood => mood.label).join(',') : '');
 
+   useEffect(() => {
+      if (isSuccess && data) {
+        const filtered = filterFilms(data.films, selectedCheckboxes);
+        setFilteredFilms(filtered);
+      }
+    }, [data, selectedCheckboxes, isSuccess]);
+
+   const filterFilms = (films: IFilmsItem[], checkboxes: string[]) => {
+      if (!films) return [];
+      
+      return films.filter((film: IFilmsItem) => {
+         const [isWatchLater, isDisliked] = checkFilmStatus(film);
+         
+         const shouldHideWatchLater = checkboxes.includes(checkboxOptions[0]);
+         const shouldHideDisliked = checkboxes.includes(checkboxOptions[1]);
+         
+         if (shouldHideWatchLater && isWatchLater) return false;
+         if (shouldHideDisliked && isDisliked) return false;
+         
+         return true;
+      });
+    };
+
    const onSubmit = (data: IFormData) => {
       if (data.moods && data.moods.length > 0) {
          const selected = emotions.filter(emotion => data.moods.includes(emotion.value));
          setSelectedMoods(selected);
-         setIsDisplayingMoods(true);
       }
+      setSelectedCheckboxes(data.checkboxes || []);
    };
 
    return (
@@ -67,27 +97,31 @@ const EmotionPicker: FC = () => {
                   </>
                )}
             />
+            <Controller name="checkboxes" control={control} render={(({ field }) => (
+               <Checkbox.Group options={checkboxOptions} onChange={field.onChange} style={{ display: 'flex', flexDirection: 'column', gap: 10 }} />
+            ))}/>
             <Button type='primary' htmlType='submit'>Применить</Button>
          </form>
-         {isDisplayingMoods && <EmotionFrame moods={selectedMoods} />}
          {isLoading && <Spin size='large' className={styles.emotionSpin} />}
          {isError && <p>Ошибка при загрузке фильмов</p>}
-         {isSuccess && data.films.length > 0 && (
+         {isSuccess && filteredFilms.length > 0 && (
             <Flex justify='center' vertical align='center' gap='middle' className={styles.filmContainer}>
-               {data?.films.map((filmItem: IFilmsItem) => (
+               {filteredFilms.map((filmItem: IFilmsItem) => (
                   <Card key={filmItem.filmId} title={<span className={styles.filmTitle}>{filmItem.nameRu}</span>} className={styles.filmCard} onClick={() => navigate(`/film/${filmItem.filmId}`)}>
                      <p>{filmItem.description}</p>
                      {filmItem.filmLength ? <p>Длительность фильма: {formatTime(filmItem.filmLength)}</p> : null}
                      <Flex justify='center' className={styles.filmImgContainer}>
                         <img src={filmItem.posterUrl} alt={filmItem.nameRu} className={styles.filmImg}/>
                      </Flex>
+                     <Flex gap='small' justify='right' className={styles.filmButtonsContainer}>
+                        <WatchLaterButton filmData={filmItem} />
+                        <DislikeButton filmData={filmItem} />
+                     </Flex>
                   </Card>
                ))}
             </Flex>
          )}
-         {isSuccess && data.films.length === 0 &&
-            <p>Ничего не найдено</p>
-         }            
+         {isSuccess && data.films.length === 0 && <p>Ничего не найдено</p>}            
       </Flex>
    )
 }
