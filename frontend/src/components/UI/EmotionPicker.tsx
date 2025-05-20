@@ -10,6 +10,7 @@ import styles from './EmotionPicker.module.scss';
 import WatchLaterButton from './buttons/WatchLaterButton';
 import DislikeButton from './buttons/DislikeButton';
 import { checkFilmStatus } from '../../utils/filmsList';
+import AlreadyWatchedButton from './buttons/AlreadyWatchedButton';
 
 interface IFormData {
    moods: string[];
@@ -27,7 +28,7 @@ const emotions: IEmotionItem[] = [
    { value: 'absurd', label: 'Абсурд/Чёрный юмор', emoji: '🤡', color: '#f368e0' }
 ];
 
-const checkboxOptions = ['Скрыть, что буду смотреть позже', 'Скрыть непонравившиеся фильмы'];
+const checkboxOptions = ['Скрыть, что буду смотреть позже', 'Скрыть непонравившиеся фильмы', 'Скрыть просмотренные фильмы'];
 
 const EmotionPicker: FC = () => { 
    const [selectedMoods, setSelectedMoods] = useState<IEmotionItem[]>([]);
@@ -50,13 +51,15 @@ const EmotionPicker: FC = () => {
       if (!films) return [];
       
       return films.filter((film: IFilmsItem) => {
-         const [isWatchLater, isDisliked] = checkFilmStatus(film);
+         const [isFilmWatchLater, isFilmDisliked, isFilmWatched] = checkFilmStatus(film);
          
          const shouldHideWatchLater = checkboxes.includes(checkboxOptions[0]);
          const shouldHideDisliked = checkboxes.includes(checkboxOptions[1]);
+         const shouldHideWatched = checkboxes.includes(checkboxOptions[2]);
          
-         if (shouldHideWatchLater && isWatchLater) return false;
-         if (shouldHideDisliked && isDisliked) return false;
+         if (shouldHideWatchLater && isFilmWatchLater) return false;
+         if (shouldHideDisliked && isFilmDisliked) return false;
+         if (shouldHideWatched && isFilmWatched) return false;
          
          return true;
       });
@@ -116,6 +119,7 @@ const EmotionPicker: FC = () => {
                      <Flex gap='small' justify='right' className={styles.filmButtonsContainer}>
                         <WatchLaterButton filmData={filmItem} />
                         <DislikeButton filmData={filmItem} />
+                        <AlreadyWatchedButton filmData={filmItem} />
                      </Flex>
                   </Card>
                ))}
