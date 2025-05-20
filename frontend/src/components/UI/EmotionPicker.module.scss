@@ -9,11 +9,10 @@ $cart-dots: #fff;
       display: flex; 
       flex-direction: column; 
       align-items: center; 
-      gap: 5px;
+      gap: 15px;
    }
    &Select {
       min-width: 250px; 
-      margin-bottom: 16px;
    }
    &Error {
       color: $emotion-error;
@@ -28,10 +27,16 @@ $cart-dots: #fff;
 .film {
    &Container {
       max-width: 720px;
+      width: 100%;
+      padding: 0 20px;
    }
    &Title {
       font-size: 2rem;
       color: $card-text;
+      word-wrap: break-word;
+      white-space: normal;
+      text-align: center;
+      margin: 0 auto;
    }
    &Card {
       display: flex; 
@@ -47,7 +52,11 @@ $cart-dots: #fff;
       box-shadow: 0 4px 8px #00000030;
       padding: 15px;
       cursor: pointer;
+      max-width: 90dvw;
 
+      p {
+         word-break: break-word;
+      }
       &::before, &::after {
          content: '';
          position: absolute;

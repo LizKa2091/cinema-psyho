@@ -10,6 +10,7 @@ import styles from './EmotionPicker.module.scss';
 import WatchLaterButton from './buttons/WatchLaterButton';
 import DislikeButton from './buttons/DislikeButton';
 import { checkFilmStatus } from '../../utils/filmsList';
+import AlreadyWatchedButton from './buttons/AlreadyWatchedButton';
 
 interface IFormData {
    moods: string[];
@@ -27,11 +28,12 @@ const emotions: IEmotionItem[] = [
    { value: 'absurd', label: 'Абсурд/Чёрный юмор', emoji: '🤡', color: '#f368e0' }
 ];
 
-const checkboxOptions = ['Скрыть, что буду смотреть позже', 'Скрыть непонравившиеся фильмы'];
+const checkboxOptions = ['Скрыть, что буду смотреть позже', 'Скрыть непонравившиеся фильмы', 'Скрыть просмотренные фильмы'];
 
 const EmotionPicker: FC = () => { 
    const [selectedMoods, setSelectedMoods] = useState<IEmotionItem[]>([]);
    const [selectedCheckboxes, setSelectedCheckboxes] = useState<string[]>([]);
+   const [displayResults, setDisplayResults] = useState<boolean>(false);
    const [filteredFilms, setFilteredFilms] = useState<IFilmsItem[]>([]);
 
    const navigate = useNavigate();
@@ -44,19 +46,21 @@ const EmotionPicker: FC = () => {
         const filtered = filterFilms(data.films, selectedCheckboxes);
         setFilteredFilms(filtered);
       }
-    }, [data, selectedCheckboxes, isSuccess]);
+    }, [data, selectedCheckboxes, isSuccess, displayResults]);
 
    const filterFilms = (films: IFilmsItem[], checkboxes: string[]) => {
       if (!films) return [];
       
       return films.filter((film: IFilmsItem) => {
-         const [isWatchLater, isDisliked] = checkFilmStatus(film);
+         const [isFilmWatchLater, isFilmDisliked, isFilmWatched] = checkFilmStatus(film);
          
          const shouldHideWatchLater = checkboxes.includes(checkboxOptions[0]);
          const shouldHideDisliked = checkboxes.includes(checkboxOptions[1]);
+         const shouldHideWatched = checkboxes.includes(checkboxOptions[2]);
          
-         if (shouldHideWatchLater && isWatchLater) return false;
-         if (shouldHideDisliked && isDisliked) return false;
+         if (shouldHideWatchLater && isFilmWatchLater) return false;
+         if (shouldHideDisliked && isFilmDisliked) return false;
+         if (shouldHideWatched && isFilmWatched) return false;
          
          return true;
       });
@@ -66,6 +70,7 @@ const EmotionPicker: FC = () => {
       if (data.moods && data.moods.length > 0) {
          const selected = emotions.filter(emotion => data.moods.includes(emotion.value));
          setSelectedMoods(selected);
+         setDisplayResults(true);
       }
       setSelectedCheckboxes(data.checkboxes || []);
    };
@@ -104,7 +109,7 @@ const EmotionPicker: FC = () => {
          </form>
          {isLoading && <Spin size='large' className={styles.emotionSpin} />}
          {isError && <p>Ошибка при загрузке фильмов</p>}
-         {isSuccess && filteredFilms.length > 0 && (
+         {isSuccess && displayResults && filteredFilms.length > 0 && (
             <Flex justify='center' vertical align='center' gap='middle' className={styles.filmContainer}>
                {filteredFilms.map((filmItem: IFilmsItem) => (
                   <Card key={filmItem.filmId} title={<span className={styles.filmTitle}>{filmItem.nameRu}</span>} className={styles.filmCard} onClick={() => navigate(`/film/${filmItem.filmId}`)}>
@@ -116,6 +121,7 @@ const EmotionPicker: FC = () => {
                      <Flex gap='small' justify='right' className={styles.filmButtonsContainer}>
                         <WatchLaterButton filmData={filmItem} />
                         <DislikeButton filmData={filmItem} />
+                        <AlreadyWatchedButton filmData={filmItem} />
                      </Flex>
                   </Card>
                ))}

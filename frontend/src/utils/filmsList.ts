@@ -5,9 +5,11 @@ type filmAction = 'add' | 'remove';
 export const checkFilmStatus = (filmData: IFilmsItem) => {
    let filmsWatchLaterList: string | null = localStorage.getItem('watchLaterList');
    let filmsDislikedList: string | null = localStorage.getItem('dislikedList');
+   let filmsWatchedList: string | null = localStorage.getItem('watchedList');
 
    let isFilmWatchLater: boolean | null = null;
    let isFilmDisliked: boolean | null = null;
+   let isFilmWatched: boolean | null = null;
 
    if (!filmsWatchLaterList) {
       localStorage.setItem('watchLaterList', JSON.stringify({ films: [] }));
@@ -19,15 +21,22 @@ export const checkFilmStatus = (filmData: IFilmsItem) => {
       isFilmDisliked = false;
    }
 
-   if (filmsWatchLaterList && filmsDislikedList) {
+   if (!filmsWatchedList) {
+      localStorage.setItem('watchedList', JSON.stringify({ films: [] }));
+      isFilmWatched = false;
+   }
+
+   if (filmsWatchLaterList && filmsDislikedList && filmsWatchedList) {
       const watchLaterData = JSON.parse(filmsWatchLaterList);
       const dislikedData = JSON.parse(filmsDislikedList);
+      const watchedData = JSON.parse(filmsWatchedList);
       
       isFilmWatchLater = Array.isArray(watchLaterData.films) && watchLaterData.films.some((film: IFilmsItem) => filmData.filmId === film.filmId);
       isFilmDisliked = Array.isArray(dislikedData.films) && dislikedData.films.some((film: IFilmsItem) => filmData.filmId === film.filmId);
+      isFilmWatched = Array.isArray(watchedData.films) && watchedData.films.some((film: IFilmsItem) => filmData.filmId === film.filmId);
    }
 
-   return [isFilmWatchLater, isFilmDisliked];
+   return [isFilmWatchLater, isFilmDisliked, isFilmWatched];
 };
 
 export const filmWatchLaterAction = (filmData: IFilmsItem, action: filmAction) => {
@@ -61,5 +70,22 @@ export const filmDislikeAction = (filmData: IFilmsItem, action: filmAction) => {
    }
    
    localStorage.setItem('dislikedList', JSON.stringify({ films: updatedFilms }));
+   return action === 'add';
+};
+
+export const filmWatchedAction = (filmData: IFilmsItem, action: filmAction) => {
+   const storedData = localStorage.getItem('watchedList') || '{"films":[]}';
+   const { films } = JSON.parse(storedData);
+   
+   let updatedFilms;
+   
+   if (action === 'add') {
+      updatedFilms = [...films, filmData];
+   } 
+   else {
+      updatedFilms = films.filter((film: IFilmsItem) => film.filmId !== filmData.filmId);
+   }
+   
+   localStorage.setItem('watchedList', JSON.stringify({ films: updatedFilms }));
    return action === 'add';
 };
