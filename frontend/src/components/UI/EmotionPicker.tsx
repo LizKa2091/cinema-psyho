@@ -33,6 +33,7 @@ const checkboxOptions = ['Скрыть, что буду смотреть поз�
 const EmotionPicker: FC = () => { 
    const [selectedMoods, setSelectedMoods] = useState<IEmotionItem[]>([]);
    const [selectedCheckboxes, setSelectedCheckboxes] = useState<string[]>([]);
+   const [displayResults, setDisplayResults] = useState<boolean>(false);
    const [filteredFilms, setFilteredFilms] = useState<IFilmsItem[]>([]);
 
    const navigate = useNavigate();
@@ -45,7 +46,7 @@ const EmotionPicker: FC = () => {
         const filtered = filterFilms(data.films, selectedCheckboxes);
         setFilteredFilms(filtered);
       }
-    }, [data, selectedCheckboxes, isSuccess]);
+    }, [data, selectedCheckboxes, isSuccess, displayResults]);
 
    const filterFilms = (films: IFilmsItem[], checkboxes: string[]) => {
       if (!films) return [];
@@ -69,6 +70,7 @@ const EmotionPicker: FC = () => {
       if (data.moods && data.moods.length > 0) {
          const selected = emotions.filter(emotion => data.moods.includes(emotion.value));
          setSelectedMoods(selected);
+         setDisplayResults(true);
       }
       setSelectedCheckboxes(data.checkboxes || []);
    };
@@ -107,7 +109,7 @@ const EmotionPicker: FC = () => {
          </form>
          {isLoading && <Spin size='large' className={styles.emotionSpin} />}
          {isError && <p>Ошибка при загрузке фильмов</p>}
-         {isSuccess && filteredFilms.length > 0 && (
+         {isSuccess && displayResults && filteredFilms.length > 0 && (
             <Flex justify='center' vertical align='center' gap='middle' className={styles.filmContainer}>
                {filteredFilms.map((filmItem: IFilmsItem) => (
                   <Card key={filmItem.filmId} title={<span className={styles.filmTitle}>{filmItem.nameRu}</span>} className={styles.filmCard} onClick={() => navigate(`/film/${filmItem.filmId}`)}>
