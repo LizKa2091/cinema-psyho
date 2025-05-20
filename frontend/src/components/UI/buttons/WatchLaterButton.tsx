@@ -14,9 +14,9 @@ const WatchLaterButton: FC<IWatchLaterButtonProps> = ({ filmData }) => {
    const [isFilmSaved, setIsFilmSaved] = useState<boolean>(false);
 
    useEffect(() => {
-      const [isWatchLater] = checkFilmStatus(filmData);
+      const [isFilmWatchLater, _, __] = checkFilmStatus(filmData);
 
-      if (isWatchLater) setIsFilmSaved(isWatchLater);
+      if (isFilmWatchLater) setIsFilmSaved(isFilmWatchLater);
    }, [filmData.filmId]);
 
    const handleFilmAction = (e: MouseEvent<HTMLButtonElement>) => {

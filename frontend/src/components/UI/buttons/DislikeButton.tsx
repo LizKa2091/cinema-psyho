@@ -14,9 +14,9 @@ const DislikeButton: FC<IDislikeButtonProps> = ({ filmData }) => {
    const [isFilmSaved, setIsFilmSaved] = useState<boolean>(false);
 
    useEffect(() => {
-      const [_, isDisliked] = checkFilmStatus(filmData);
+      const [_, isFilmDisliked, __] = checkFilmStatus(filmData);
       
-      if (isDisliked) setIsFilmSaved(isDisliked);
+      if (isFilmDisliked) setIsFilmSaved(isFilmDisliked);
    }, [filmData.filmId]);
 
    const handleDislike = (e: MouseEvent<HTMLButtonElement>) => {
