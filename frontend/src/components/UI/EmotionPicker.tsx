@@ -1,16 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { IEmotionItem } from '../../types/menu.types';
 import { IFilmsItem } from '../../types/film.types';
-import { Select, Button, Spin, Flex, Card, Checkbox } from 'antd';
+import { Select, Button, Spin, Flex, Checkbox } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
 import { useFilms } from '../../hooks/useFilms';
-import { useNavigate } from 'react-router-dom';
-import { formatTime } from '../../utils/formatTime';
 import styles from './EmotionPicker.module.scss';
-import WatchLaterButton from './buttons/WatchLaterButton';
-import DislikeButton from './buttons/DislikeButton';
 import { checkFilmStatus } from '../../utils/filmsList';
-import AlreadyWatchedButton from './buttons/AlreadyWatchedButton';
+import CompactFilmItem from './CompactFilmItem';
 
 interface IFormData {
    moods: string[];
@@ -35,8 +31,6 @@ const EmotionPicker: FC = () => {
    const [selectedCheckboxes, setSelectedCheckboxes] = useState<string[]>([]);
    const [displayResults, setDisplayResults] = useState<boolean>(false);
    const [filteredFilms, setFilteredFilms] = useState<IFilmsItem[]>([]);
-
-   const navigate = useNavigate();
 
    const { handleSubmit, control } = useForm<IFormData>();
    const { data, isLoading, isError, isSuccess } = useFilms(selectedMoods.length > 0 ? selectedMoods.map(mood => mood.label).join(',') : '');
@@ -111,20 +105,9 @@ const EmotionPicker: FC = () => {
          {isError && <p>Ошибка при загрузке фильмов</p>}
          {isSuccess && displayResults && filteredFilms.length > 0 && (
             <Flex justify='center' vertical align='center' gap='middle' className={styles.filmContainer}>
-               {filteredFilms.map((filmItem: IFilmsItem) => (
-                  <Card key={filmItem.filmId} title={<span className={styles.filmTitle}>{filmItem.nameRu}</span>} className={styles.filmCard} onClick={() => navigate(`/film/${filmItem.filmId}`)}>
-                     <p>{filmItem.description}</p>
-                     {filmItem.filmLength ? <p>Длительность фильма: {formatTime(filmItem.filmLength)}</p> : null}
-                     <Flex justify='center' className={styles.filmImgContainer}>
-                        <img src={filmItem.posterUrl} alt={filmItem.nameRu} className={styles.filmImg}/>
-                     </Flex>
-                     <Flex gap='small' justify='right' className={styles.filmButtonsContainer}>
-                        <WatchLaterButton filmData={filmItem} />
-                        <DislikeButton filmData={filmItem} />
-                        <AlreadyWatchedButton filmData={filmItem} />
-                     </Flex>
-                  </Card>
-               ))}
+               {filteredFilms.map((filmItem: IFilmsItem) => 
+                  <CompactFilmItem filmItem={filmItem} />
+               )}
             </Flex>
          )}
          {isSuccess && data.films.length === 0 && <p>Ничего не найдено</p>}            

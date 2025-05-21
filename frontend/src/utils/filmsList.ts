@@ -89,3 +89,26 @@ export const filmWatchedAction = (filmData: IFilmsItem, action: filmAction) => {
    localStorage.setItem('watchedList', JSON.stringify({ films: updatedFilms }));
    return action === 'add';
 };
+
+export const filmsListByType = (type: string) => {
+   let requestedData: IFilmsItem[];
+
+   switch (type) {
+      case 'watchLaterList':
+         let watchLaterData = localStorage.getItem('watchLaterList');
+         requestedData = watchLaterData ? JSON.parse(watchLaterData).films : [];
+         break;
+      case 'dislikedList':
+         let dislikedData = localStorage.getItem('dislikedList');
+         requestedData = dislikedData ? JSON.parse(dislikedData).films : [];
+         break;
+      case 'watchedList':
+         let alreadyWatchedData = localStorage.getItem('watchedList');
+         requestedData = alreadyWatchedData ? JSON.parse(alreadyWatchedData).films : [];
+         break;
+      default: 
+         requestedData = [];
+         break;
+   }
+   return requestedData;
+};
