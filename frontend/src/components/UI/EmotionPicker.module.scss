@@ -1,8 +1,4 @@
 $emotion-error: #ff0000;
-$card-border-color: #000;
-$card-bg: #000;
-$card-text: #ffffff80;
-$cart-dots: #fff;
 
 .emotion {
    &Container {
@@ -29,69 +25,5 @@ $cart-dots: #fff;
       max-width: 720px;
       width: 100%;
       padding: 0 20px;
-   }
-   &Title {
-      font-size: 2rem;
-      color: $card-text;
-      word-wrap: break-word;
-      white-space: normal;
-      text-align: center;
-      margin: 0 auto;
-   }
-   &Card {
-      display: flex; 
-      flex-direction: column; 
-      align-items: center;
-      border: 1px solid $card-border-color; 
-      border-radius: 8px;
-      background: $card-bg;
-      font-size: 1.15rem;
-      color: $card-text;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 4px 8px #00000030;
-      padding: 15px;
-      cursor: pointer;
-      max-width: 90dvw;
-
-      p {
-         word-break: break-word;
-      }
-      &::before, &::after {
-         content: '';
-         position: absolute;
-         top: 0;
-         bottom: 0;
-         width: 20px;
-         background: repeating-linear-gradient(
-            to bottom,
-            $card-border-color,
-            $card-border-color 10px,
-            $cart-dots 10px,
-            $cart-dots 20px
-         );
-         background-size: 100% 20px;
-      }
-      &::before {
-         left: 0;
-         border-radius: 8px 0 0 8px;
-      }
-      &::after {
-         right: 0;
-         border-radius: 0 8px 8px 0;
-      }
-   }
-   &Img {
-      width: 100%;
-      height: 100%;
-      max-width: 420px;
-      max-height: 800px;
-
-      &Container {
-         margin-top: 24px;
-      }
-   }
-   &ButtonsContainer {
-      margin: 10px 0;
    }
 }
