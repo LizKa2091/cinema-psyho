@@ -5,10 +5,10 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Интерфейсы для типизации
 interface IGenApiRequest {
-  prompt: string;
-  max_tokens?: number;
+   messages: Array<{ role: string; content: string }>;
+   max_tokens?: number;
+   is_sync?: boolean;
 }
 
 interface IGenApiResponse {
@@ -23,8 +23,15 @@ interface IErrorResponse {
 const app: Express = express();
 const PORT = 8000;
 
-app.use(cors());
+app.use(cors({
+   origin: process.env.FRONTEND_URL || '*'
+}));
+
 app.use(express.json());
+
+app.get('/api/health', (req: Request, res: Response) => {
+   res.status(200).json({ status: 'OK' });
+});
 
 app.post('/api/generate-comment', async (req: Request, res: Response): Promise<any> => {
   const apiKey = process.env.GEN_API_KEY;
@@ -66,8 +73,4 @@ app.post('/api/generate-comment', async (req: Request, res: Response): Promise<a
    }}
 });
 
-app.listen(PORT, () => {
-  console.log(`Proxy server running on port ${PORT}`);
-});
-
-export default app;
+module.exports = app;
