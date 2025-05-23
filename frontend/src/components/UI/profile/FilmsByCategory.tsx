@@ -5,6 +5,7 @@ import { ISavedCategoriesItem } from '../../../types/profile.types';
 import { IFilmsItem } from '../../../types/film.types';
 import { filmsListByType } from '../../../utils/filmsList';
 import CompactFilmItem from '../CompactFilmItem';
+import AIComment from './AIComment';
 import styles from './FilmsByCategory.module.scss';
 
 const categories: ISavedCategoriesItem[] = [
@@ -28,9 +29,12 @@ const FilmsByCategory: FC = () => {
       if (films.length === 0) return <span>В этой категории у вас нет сохранённных фильмов</span>
       
       return (
-         <Flex vertical gap='middle' className={styles.filmsContainer}>
+         <Flex vertical gap='middle'>
             {films.map((film: IFilmsItem) => (
-               <CompactFilmItem filmItem={film} />
+               <Flex justify='space-around' align='center' className={styles.filmItem}>
+                  <CompactFilmItem filmItem={film} />
+                  <AIComment filmId={film.filmId} nameRu={film.nameRu} description={film.description} />
+               </Flex>
             ))}
          </Flex>
       )
