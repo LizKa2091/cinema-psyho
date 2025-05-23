@@ -8,21 +8,22 @@ interface IAICommentProps {
    filmId: number;
    nameRu: string;
    description: string;
+   filmType: string;
 }
 
-const AIComment: FC<IAICommentProps> = ({ filmId, nameRu, description }) => {
+const AIComment: FC<IAICommentProps> = ({ filmId, nameRu, description, filmType }) => {
    const [comment, setComment] = useState<string>('');
 
    const { mutate } = useGenerateFilmComment();
 
    useEffect(() => {
-      const prompt = generateAIprompt(filmId, nameRu, description);
+      const prompt = generateAIprompt(filmId, nameRu, description, filmType);
 
       mutate(prompt, {
          onSuccess: (data) => setComment(data.result || data.message || 'ошибка'),
          onError: (error) => setComment(error.message || 'ошибка')
       });
-   }, [filmId, nameRu, description, mutate]);
+   }, [filmId, nameRu, description, filmType, mutate]);
 
    return (
       <Card title="Анализ AI" className={styles.AICard} extra={<Tag color="geekblue">GPT-4o mini</Tag>}>

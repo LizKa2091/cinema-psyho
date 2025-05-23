@@ -25,7 +25,7 @@ const FilmsByCategory: FC = () => {
       setWatchedFilms(filmsListByType('watchedList'));
    }, []);
 
-   const displayFilms = (films: IFilmsItem[]) => {
+   const displayFilms = (films: IFilmsItem[], category: string) => {
       if (films.length === 0) return <span>В этой категории у вас нет сохранённных фильмов</span>
       
       return (
@@ -33,7 +33,7 @@ const FilmsByCategory: FC = () => {
             {films.map((film: IFilmsItem) => (
                <Flex justify='space-around' align='center' className={styles.filmItem}>
                   <CompactFilmItem filmItem={film} />
-                  <AIComment filmId={film.filmId} nameRu={film.nameRu} description={film.description} />
+                  <AIComment filmId={film.filmId} nameRu={film.nameRu} description={film.description} filmType={category}/>
                </Flex>
             ))}
          </Flex>
@@ -47,7 +47,7 @@ const FilmsByCategory: FC = () => {
       key: category.value,
       children: displayFilms(category.value === 'watchLater' ? watchLaterFilms : 
          category.value === 'disliked' ? dislikedFilms :
-         watchedFilms
+         watchedFilms, category.value
       )
    }));
 
