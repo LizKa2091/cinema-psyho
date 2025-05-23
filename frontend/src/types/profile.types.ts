@@ -11,6 +11,7 @@ export interface IAIResponse {
       prompt_tokens: number;
       completion_tokens: number;
    };
+   message?: string;
 }
 
 export interface IApiResponse {
