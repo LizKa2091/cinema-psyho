@@ -46,7 +46,7 @@ app.post('/api/generate-comment', async (req: Request, res: Response): Promise<a
 
   try {
     const response = await axios.post<IGenApiResponse>(
-      'https://api.gen-api.ru/api/v1/networks/gpt-4-5', {
+      'https://api.gen-api.ru/api/v1/networks/gpt-4o-mini', {
          messages: [{
             role: "user",
             content: req.body.prompt,
@@ -71,6 +71,10 @@ app.post('/api/generate-comment', async (req: Request, res: Response): Promise<a
      const errorMessage = axiosError.response?.data?.message || axiosError.message || 'Unknown error occurred';
      return res.status(500).json({ error: errorMessage });
    }}
+});
+
+app.listen(PORT, () => {
+   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
 module.exports = app;
