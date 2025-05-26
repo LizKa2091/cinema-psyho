@@ -14,6 +14,18 @@ export interface IFilmsResponse {
    films: IFilmsItem[];
 }
 
+export interface IFilmTrailerResponse {
+   total: number;
+   items: IFilmTrailerItem[];
+}
+
+type trailerSite = 'YOUTUBE' | 'YANDEX_DISK' | 'KINOPOISK_WIDGET';
+
+export interface IFilmTrailerItem {
+   url: string;
+   site: trailerSite;
+}
+
 export interface IFilmItem {
    filmId: number;
    nameRu: string;
