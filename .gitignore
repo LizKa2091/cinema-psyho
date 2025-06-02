@@ -19,7 +19,9 @@
 .env.production.local
 .env
 
-.css
+# css files
+*.css
+*.module.css
 
 npm-debug.log*
 yarn-debug.log*
