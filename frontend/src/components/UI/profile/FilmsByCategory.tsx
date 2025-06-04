@@ -31,7 +31,7 @@ const FilmsByCategory: FC = () => {
       return (
          <Flex vertical gap='middle'>
             {films.map((film: IFilmsItem) => (
-               <Flex justify='space-around' align='center' className={styles.filmItem}>
+               <Flex justify='space-around' align='center' className={styles.filmItem} key={film.filmId}>
                   <CompactFilmItem filmItem={film} />
                   <AIComment filmId={film.filmId} nameRu={film.nameRu} description={film.description} filmType={category}/>
                </Flex>
