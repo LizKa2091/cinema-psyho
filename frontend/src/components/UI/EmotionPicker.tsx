@@ -7,6 +7,7 @@ import { useFilms } from '../../hooks/useFilms';
 import styles from './EmotionPicker.module.scss';
 import { checkFilmStatus } from '../../utils/filmsList';
 import CompactFilmItem from './CompactFilmItem';
+import { addItemSearchHistory, clearSearchHistory } from '../../features/searchHistory';
 
 interface IFormData {
    moods: string[];
@@ -40,7 +41,15 @@ const EmotionPicker: FC = () => {
         const filtered = filterFilms(data.films, selectedCheckboxes);
         setFilteredFilms(filtered);
       }
-    }, [data, selectedCheckboxes, isSuccess, displayResults]);
+   }, [data, selectedCheckboxes, isSuccess, displayResults]);
+
+   useEffect(() => {
+      clearSearchHistory();
+
+      if (selectedMoods.length > 0 && displayResults) {
+         selectedMoods.forEach((emotion: IEmotionItem) => addItemSearchHistory(emotion.value));
+      }
+   }, [selectedMoods, displayResults]);
 
    const filterFilms = (films: IFilmsItem[], checkboxes: string[]) => {
       if (!films) return [];
