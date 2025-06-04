@@ -1,4 +1,6 @@
-export const get30Days = () => {
+import { IDateTimestamp } from "../types/history.types";
+
+export const get30Days = (): IDateTimestamp[] => {
    const today = new Date();
    const currTimestamp = today.getTime();
    const thirtyDaysAgoTimestamp = currTimestamp - (30 * 24 * 60 * 60 * 1000);
@@ -11,7 +13,7 @@ export const get30Days = () => {
       const year = date.getFullYear();
 
       const formattedDate = `${day}.${month}.${year}`;
-      datesArray.push(formattedDate);
+      datesArray.push({ date: formattedDate, timestamp });
    }
 
    return datesArray;
