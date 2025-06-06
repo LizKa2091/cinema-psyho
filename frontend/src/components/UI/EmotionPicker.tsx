@@ -110,7 +110,7 @@ const EmotionPicker: FC = () => {
             ))}/>
             <Button type='primary' htmlType='submit'>Применить</Button>
          </form>
-         {isLoading && <Spin size='large' className={styles.emotionSpin} />}
+         {isLoading && displayResults && <Spin size='large' className={styles.emotionSpin} />}
          {isError && <p>Ошибка при загрузке фильмов</p>}
          {isSuccess && displayResults && filteredFilms.length > 0 && (
             <Flex justify='center' vertical align='center' gap='middle' className={styles.filmContainer}>
