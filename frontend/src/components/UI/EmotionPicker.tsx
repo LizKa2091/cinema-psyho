@@ -33,7 +33,7 @@ const EmotionPicker: FC = () => {
    const [selectedCheckboxes, setSelectedCheckboxes] = useState<string[]>([]);
    const [displayResults, setDisplayResults] = useState<boolean>(false);
    const [filteredFilms, setFilteredFilms] = useState<IFilmsItem[]>([]);
-   const [currPage, handlePageChange] = useState<number>(1);
+   const [currPage, setCurrPage] = useState<number>(1);
 
    const { handleSubmit, control } = useForm<IFormData>();
    const { data, isLoading, isError, isSuccess } = useFilms(
@@ -122,10 +122,15 @@ const EmotionPicker: FC = () => {
                {filteredFilms.map((filmItem: IFilmsItem) => 
                   <CompactFilmItem key={filmItem.filmId} filmItem={filmItem} />
                )}
-               <FilmsPagination totalItems={data.totalFilmsCount} currPage={currPage} pagesCount={Math.min(data.totalPages, 20)} handlePageChange={handlePageChange} />
+               <FilmsPagination totalItems={data.totalFilmsCount} currPage={currPage} pagesCount={Math.min(data.totalPages, 20)} handlePageChange={setCurrPage} />
             </Flex>
          )}
-         {isSuccess && data.films.length === 0 && <p>Ничего не найдено</p>}            
+         {isSuccess && data.films.length === 0 && 
+            <Flex justify='center' align='center' vertical gap='small'>
+               <p>Ничего не найдено</p>
+               <Button onClick={() => setCurrPage(1)}>Вернуться на первую страницу</Button>
+            </Flex>
+         }            
       </Flex>
    )
 }
