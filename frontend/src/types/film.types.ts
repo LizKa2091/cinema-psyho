@@ -10,8 +10,9 @@ export interface IFilmsItem {
 }
 
 export interface IFilmsResponse {
-   pagesCount: string;
    films: IFilmsItem[];
+   totalPages: number;
+   totalFilmsCount: number;
 }
 
 export interface IFilmTrailerResponse {
