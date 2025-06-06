@@ -8,6 +8,7 @@ import styles from './EmotionPicker.module.scss';
 import { checkFilmStatus } from '../../utils/filmsList';
 import CompactFilmItem from './CompactFilmItem';
 import { addItemSearchHistory, clearSearchHistory } from '../../features/searchHistory';
+import FilmsPagination from './FilmsPagination';
 
 interface IFormData {
    moods: string[];
@@ -32,9 +33,13 @@ const EmotionPicker: FC = () => {
    const [selectedCheckboxes, setSelectedCheckboxes] = useState<string[]>([]);
    const [displayResults, setDisplayResults] = useState<boolean>(false);
    const [filteredFilms, setFilteredFilms] = useState<IFilmsItem[]>([]);
+   const [currPage, handlePageChange] = useState<number>(1);
 
    const { handleSubmit, control } = useForm<IFormData>();
-   const { data, isLoading, isError, isSuccess } = useFilms(selectedMoods.length > 0 ? selectedMoods.map(mood => mood.label).join(',') : '');
+   const { data, isLoading, isError, isSuccess } = useFilms(
+      selectedMoods.length > 0 ? selectedMoods.map(mood => mood.label).join(',') : '',
+      currPage
+   );
 
    useEffect(() => {
       if (isSuccess && data) {
@@ -115,8 +120,9 @@ const EmotionPicker: FC = () => {
          {isSuccess && displayResults && filteredFilms.length > 0 && (
             <Flex justify='center' vertical align='center' gap='middle' className={styles.filmContainer}>
                {filteredFilms.map((filmItem: IFilmsItem) => 
-                  <CompactFilmItem filmItem={filmItem} />
+                  <CompactFilmItem key={filmItem.filmId} filmItem={filmItem} />
                )}
+               <FilmsPagination totalItems={data.totalFilmsCount} currPage={currPage} pagesCount={Math.min(data.totalPages, 20)} handlePageChange={handlePageChange} />
             </Flex>
          )}
          {isSuccess && data.films.length === 0 && <p>Ничего не найдено</p>}            
