@@ -14,7 +14,7 @@ const Recommendations: FC<IRecommendationsProps> = ({ filmId }) => {
    const navigate = useNavigate();
 
    return (
-      <Flex vertical gap='middle'>
+      <Flex vertical gap='middle' className={styles.mainContainer}>
          {isError && <p>Произошла ошибка при загрузке похожих фильмов</p>}
          {isSuccess && data?.total === 0 ? (
             <p className={styles.error}>Похожие фильмы не найдены</p>

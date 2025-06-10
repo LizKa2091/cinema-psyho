@@ -11,7 +11,7 @@ const { Header, Footer } = Layout;
 const headerItems: IMenuItem[] = [
    { label: 'Главная', key: 'home', path: '/' },
    { label: 'Профиль', key: 'profile', path: '/profile' },
-   { label: 'Аналитика', key: 'analytics', path: '/' },
+   { label: 'Аналитика', key: 'analytics', path: '/profile' },
    { label: 'О создателе', key: 'about', path: '/' }
 ];
 
@@ -35,7 +35,9 @@ const MainLayout: FC<IMainLayoutProps> = ({ children }) => {
    return (
       <Layout>
          <Header className={styles.header}>
-            <div className={styles.logo} onClick={() => navigate('/')}>Cinema Psyho</div>
+            <div className={styles.logo} onClick={() => navigate('/')}>
+               <h1 className={styles.title}>Cinema Psyho</h1>
+            </div>
             <Menu className={styles.menu} mode='horizontal' items={menuItems} />
          </Header>
          <Content>

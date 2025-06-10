@@ -15,3 +15,30 @@
       text-align: center;
    }
 }
+.mainContainer {
+   padding: 0 10px;
+}
+
+@media (max-width: 425px) {
+   .film {
+      &Img {
+         height: 200px;
+      }
+   }
+}
+
+@media (max-width: 375px) {
+   .film {
+      &Img {
+         height: 175px;
+      }
+   }
+}
+
+@media (max-width: 320px) {
+   .film {
+      &Img {
+         height: 150px;
+      }
+   }
+}

@@ -1,20 +1,26 @@
+$header-bg: #1a1a2e;
+$logo-text: #fff;
+
 .header {
    display: flex;
    align-items: center;
-   background-color: #1a1a2e;
-   width: 100%; 
+   background-color: $header-bg;
    position: sticky; 
    top: 0;
    left: 0; 
    z-index: 1;
 }
+.title {
+   font-size: 1rem;
+   white-space: nowrap;
+}
 .logo {
    display: flex;
    align-items: center;
    font-weight: 700;
-   color: #fff;
-   width: 174px;
+   color: $logo-text;
    height: 48px;
+   padding: 0 15px;
    position: relative;
    padding-left: 58px;
    text-transform: uppercase;
@@ -32,7 +38,6 @@
    }
 }
 .menu {
-   flex: 1;
    min-width: 0;
 }
 .footer {
