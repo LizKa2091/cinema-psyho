@@ -11,7 +11,7 @@ const { Header, Footer } = Layout;
 const headerItems: IMenuItem[] = [
    { label: 'Главная', key: 'home', path: '/' },
    { label: 'Профиль', key: 'profile', path: '/profile' },
-   { label: 'Аналитика', key: 'analytics', path: '/' },
+   { label: 'Аналитика', key: 'analytics', path: '/profile' },
    { label: 'О создателе', key: 'about', path: '/' }
 ];
 
