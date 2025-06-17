@@ -4,9 +4,8 @@ import { Layout, Menu } from 'antd';
 import { ExportOutlined } from '@ant-design/icons';
 import { IMenuItem } from '../../types/menu.types';
 import styles from './MainLayout.module.scss';
-import { Content } from 'antd/es/layout/layout';
 
-const { Header, Footer } = Layout;
+const { Header, Footer, Content } = Layout;
 
 const headerItems: IMenuItem[] = [
    { label: 'Главная', key: 'home', path: '/' },
