@@ -34,7 +34,7 @@ const MainLayout: FC<IMainLayoutProps> = ({ children }) => {
    return (
       <Layout>
          <Header className={styles.header}>
-            <div className={styles.logo} onClick={() => navigate('/')}>
+            <div className={styles.logo} onClick={() => navigate('/')} data-testid="logo">
                <h1 className={styles.title}>Cinema Psyho</h1>
             </div>
             <Menu className={styles.menu} mode='horizontal' items={menuItems} />
@@ -43,7 +43,7 @@ const MainLayout: FC<IMainLayoutProps> = ({ children }) => {
             {children}
          </Content>
          <Footer className={styles.footer}>
-            Cinema Psyho ©2025 Created by LizKa2091 <Link to='https://github.com/LizKa2091'>Github <ExportOutlined /></Link>
+            Cinema Psyho ©2025 Created by LizKa2091 <Link to='https://github.com/LizKa2091' target='_blank' data-testid='footer-link'>Github <ExportOutlined /></Link>
          </Footer>
       </Layout>
    )
