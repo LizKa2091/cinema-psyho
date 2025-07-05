@@ -2,7 +2,7 @@ import axios from "axios";
 import { IFilmTrailerResponse } from "../types/film.types";
 import { useQuery } from '@tanstack/react-query';
 
-const fetchFilmTrailer = async (filmId: string) => {
+export const fetchFilmTrailer = async (filmId: string) => {
    const apiKey = process.env.REACT_APP_KINOPOISK_API_KEY;
 
    if (!apiKey) throw new Error('ошибка, не задан api ключ кинопоиска');

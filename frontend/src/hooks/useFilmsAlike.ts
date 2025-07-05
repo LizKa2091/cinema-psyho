@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { IFilmsAlikeResponse } from "../types/film.types";
 
-const fetchSimilarFilms = async (filmId: number): Promise<IFilmsAlikeResponse | undefined> => {
+export const fetchSimilarFilms = async (filmId: number): Promise<IFilmsAlikeResponse | undefined> => {
    const apiKey = process.env.REACT_APP_KINOPOISK_API_KEY;
    if (!apiKey) throw new Error(`не задан api ключ`);
 
