@@ -3,3 +3,10 @@
    position: relative;
    padding: 25px 0;
 }
+
+@media (max-width: 650px) {
+   .filmItem {
+      display: flex;
+      flex-direction: column;
+   }
+}
