@@ -1,12 +1,18 @@
 import '@testing-library/jest-dom';
+import * as filmApi from '../src/hooks/useFilm';
 
 describe('use film tests', () => {
+   const originalEnv = process.env;
+
    beforeEach(() => {
+      jest.resetModules();
+      process.env = { ...originalEnv };
       global.fetch = jest.fn();
    });
    
    afterEach(() => {
       jest.clearAllMocks();
+      process.env = originalEnv;
    });
 
    const fetchLink = 'https://kinopoiskapiunofficial.tech/api/v2.1/films/46464';
@@ -28,4 +34,10 @@ describe('use film tests', () => {
 
       await expect(fetch(fetchLink)).rejects.toThrow('Network error');
    });
+
+   test('throws error when api key is missing', async () => {
+      delete process.env.REACT_APP_KINOPOISK_API_KEY;
+
+      await expect(filmApi['fetchFilmInfo'](2)).rejects.toThrow('не задан api ключ');
+   })
 })
