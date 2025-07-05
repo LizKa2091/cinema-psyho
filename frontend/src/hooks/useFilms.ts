@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { IFilmsItem, IFilmsResponse } from '../types/film.types';
 
-const fetchFilms = async (keyWords: string, page: number): Promise<IFilmsResponse> => {
+export const fetchFilms = async (keyWords: string, page: number): Promise<IFilmsResponse> => {
    const keyWordsArr = [...keyWords.split(/[,/]/)];
    let allFilms: IFilmsItem[] = [];
    let totalPages: number = 0;
