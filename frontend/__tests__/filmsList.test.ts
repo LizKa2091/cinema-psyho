@@ -1,4 +1,4 @@
-import { checkFilmStatus, filmWatchLaterAction } from '../src/utils/filmsList';
+import { checkFilmStatus, filmWatchLaterAction, filmDislikeAction } from '../src/utils/filmsList';
 
 beforeEach(() => {
    localStorage.clear();
@@ -32,5 +32,17 @@ describe('films list util tests', () => {
 
       const [watchLater] = checkFilmStatus(testData);
       expect(watchLater).toBe(false);
+   });
+
+   test('adds or removes film from disliked list', () => {
+      filmDislikeAction(testData, 'add');
+
+      const [, disliked] = checkFilmStatus(testData);
+      expect(disliked).toBe(true);
+
+      filmDislikeAction(testData, 'remove');
+
+      const [, dislikedAfterRemove] = checkFilmStatus(testData);
+      expect(dislikedAfterRemove).toBe(false);
    });
 });
