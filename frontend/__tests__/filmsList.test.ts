@@ -1,4 +1,4 @@
-import { checkFilmStatus, filmWatchLaterAction, filmDislikeAction, filmWatchedAction } from '../src/utils/filmsList';
+import { checkFilmStatus, filmWatchLaterAction, filmDislikeAction, filmWatchedAction, filmsListByType } from '../src/utils/filmsList';
 
 beforeEach(() => {
    localStorage.clear();
@@ -56,5 +56,27 @@ describe('films list util tests', () => {
 
       const [, , watchedAfterRemove] = checkFilmStatus(testData);
       expect(watchedAfterRemove).toBe(false);
+   });
+
+   test('retrieves correct list by type', () => {
+      filmWatchLaterAction(testData, 'add');
+      filmDislikeAction(testData, 'add');
+      filmWatchedAction(testData, 'add');
+
+      const watchLaterList = filmsListByType('watchLaterList');
+      const dislikedList = filmsListByType('dislikedList');
+      const watchedList = filmsListByType('watchedList');
+
+      expect(watchLaterList).toHaveLength(1);
+      expect(dislikedList).toHaveLength(1);
+      expect(watchedList).toHaveLength(1);
+
+      expect(watchLaterList[0].filmId).toBe(testData.filmId);
+   });
+
+   test('returns empty list for unknown type', () => {
+      const unknownList = filmsListByType('nonexistentList');
+      
+      expect(unknownList).toEqual([]);
    });
 });
