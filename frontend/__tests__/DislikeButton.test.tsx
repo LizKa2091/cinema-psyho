@@ -5,7 +5,7 @@ import * as filmsListUtils from '../src/utils/filmsList';
 
 jest.mock('../src/utils/filmsList', () => ({
    checkFilmStatus: jest.fn(),
-   filmWatchedAction: jest.fn()
+   filmDislikeAction: jest.fn()
 }));
 
 const mockFilmData = {
@@ -27,36 +27,38 @@ describe('DislikeButton tests', () => {
       
       render(<DislikeButton filmData={mockFilmData} />);
       
-      const button = screen.getByText('Не показывать больше');
+      const button = screen.getByTitle('Не показывать больше');
 
       expect(button).toBeInTheDocument();
    });
 
    test('displays suggestive text show again when film is hidden', () => {
-      (filmsListUtils.checkFilmStatus as jest.Mock).mockReturnValue([false, false, true]);
-
       render(<DislikeButton filmData={mockFilmData} />);
 
-      const button = screen.getByText('Снова показывать');
-
+      const button = screen.getByTitle('Не показывать больше');
       expect(button).toBeInTheDocument();
+
+      fireEvent.click(button);
+
+      const updatedButton = screen.getByTitle('Снова показывать');
+      expect(updatedButton).toBeInTheDocument();
    });
 
    test('toggles hidden status on click', () => {
       (filmsListUtils.checkFilmStatus as jest.Mock).mockReturnValue([false, false, false]);
 
-      const filmWatchedActionMock = filmsListUtils.filmWatchedAction as jest.Mock;
+      const filmDislikeActionMock = filmsListUtils.filmDislikeAction as jest.Mock;
 
       render(<DislikeButton filmData={mockFilmData} />);
 
-      const button = screen.getByText('Не показывать больше');
+      const button = screen.getByTitle('Не показывать больше');
 
       fireEvent.click(button);
 
-      expect(filmWatchedActionMock).toHaveBeenCalledWith(mockFilmData, 'add');
+      expect(filmDislikeActionMock).toHaveBeenCalledWith(mockFilmData, 'add');
       
 
-      const updatedButton = screen.getByText('Снова показывать');
+      const updatedButton = screen.getByTitle('Снова показывать');
 
       expect(updatedButton).toBeInTheDocument();
    });
