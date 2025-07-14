@@ -38,7 +38,7 @@ const MoodChart: FC = () => {
    }, []);
    
    return (
-      <div className={styles.moodContainer}>
+      <div data-testid='mood-chart' className={styles.moodContainer}>
          <h2>Ваша история поиска</h2>
          <LineChart width={window.innerWidth - 200} height={300} data={chartData}>
             <Line type="monotone" dataKey="uv" stroke="#8884d8" />

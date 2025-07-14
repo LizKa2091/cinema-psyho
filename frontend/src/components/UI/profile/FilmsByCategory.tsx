@@ -29,7 +29,7 @@ const FilmsByCategory: FC = () => {
       if (films.length === 0) return <span>В этой категории у вас нет сохранённных фильмов</span>
       
       return (
-         <Flex vertical gap='middle'>
+         <Flex vertical gap='middle' data-testid='films-by-category'>
             {films.map((film: IFilmsItem) => (
                <Flex justify='space-around' align='center' className={styles.filmItem} key={film.filmId}>
                   <CompactFilmItem filmItem={film} />
