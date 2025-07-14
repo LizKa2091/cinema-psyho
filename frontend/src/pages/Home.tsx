@@ -5,7 +5,7 @@ import EmotionPicker from '../components/UI/EmotionPicker';
 
 const MainPage: FC = () => {
    return (
-      <Flex justify='center' align='center' gap='medium' className={styles.container}>
+      <Flex justify='center' align='center' gap='medium' data-testid='home-page' className={styles.container}>
          <EmotionPicker />
       </Flex>
    )

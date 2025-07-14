@@ -15,8 +15,8 @@ const Film: FC = () => {
    }
 
    return (
-      <Flex vertical gap='large' className={styles.main}>
-         <Link to='/' className={styles.mainButton}>
+      <Flex vertical gap='large' className={styles.main} data-testid='film-item'>
+         <Link to='/' className={styles.mainButton} data-testid='go-back-button' aria-label='Вернуться назад'>
             <ArrowLeftOutlined className={styles.arrowIcon} />
             Вернуться назад
          </Link>
