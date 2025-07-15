@@ -4,29 +4,18 @@ import { IFilmsItem } from '../../types/film.types';
 import { Select, Button, Spin, Flex, Checkbox } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
 import { useFilms } from '../../hooks/useFilms';
-import styles from './EmotionPicker.module.scss';
 import { checkFilmStatus } from '../../utils/filmsList';
-import CompactFilmItem from './CompactFilmItem';
 import { addItemSearchHistory, clearSearchHistory } from '../../features/searchHistory';
+import CompactFilmItem from './CompactFilmItem';
 import FilmsPagination from './FilmsPagination';
+import { emotions } from '../../constants/emotions';
+import { checkboxOptions } from '../../constants/checkboxOptions';
+import styles from './EmotionPicker.module.scss';
 
 interface IFormData {
    moods: string[];
    checkboxes: string[];
 }
-
-const emotions: IEmotionItem[] = [
-   { value: 'tension', label: 'Тревога/Напряжение', emoji: '😨', color: '#e94560' },
-   { value: 'nostalgia', label: 'Ностальгия', emoji: '🕰', color: '#06d6a0' },
-   { value: 'euphoria', label: 'Эйфория/Восторг', emoji: '🤩', color: '#ffd166' },
-   { value: 'melancholy', label: 'Меланхолия', emoji: '☁️', color: '#9c88ff' },
-   { value: 'rage', label: 'Ярость/Бунт', emoji: '💥', color: '#ff6b6b' },
-   { value: 'wonder', label: 'Удивление/Чудо', emoji: '✨', color: '#48dbfb' },
-   { value: 'loneliness', label: 'Одиночество', emoji: '🌑', color: '#8395a7' },
-   { value: 'absurd', label: 'Абсурд/Чёрный юмор', emoji: '🤡', color: '#f368e0' }
-];
-
-const checkboxOptions = ['Скрыть, что буду смотреть позже', 'Скрыть непонравившиеся фильмы', 'Скрыть просмотренные фильмы'];
 
 const EmotionPicker: FC = () => { 
    const [selectedMoods, setSelectedMoods] = useState<IEmotionItem[]>([]);
