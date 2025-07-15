@@ -16,11 +16,11 @@ const CompactFilmItem: FC<ICompactFilmItemProps> = ({ filmItem }) => {
    const navigate = useNavigate();
 
    return (
-      <Card key={filmItem.filmId} title={<span className={styles.filmTitle}>{filmItem.nameRu}</span>} className={styles.filmCard} onClick={() => navigate(`/film/${filmItem.filmId}`)}>
+      <Card key={filmItem.filmId} onClick={() => navigate(`/film/${filmItem.filmId}`)} title={<span className={styles.filmTitle}>{filmItem.nameRu}</span>} data-testid='film-item-card' className={styles.filmCard}>
          <p>{filmItem.description}</p>
          {filmItem.filmLength ? <p>Длительность фильма: {formatTime(filmItem.filmLength)}</p> : null}
          <Flex justify='center' className={styles.filmImgContainer}>
-            <img src={filmItem.posterUrl} alt={filmItem.nameRu} className={styles.filmImg}/>
+            <img src={filmItem.posterUrl} alt={filmItem.nameRu} className={styles.filmImg} />
          </Flex>
          <Flex gap='small' justify='right' className={styles.filmButtonsContainer}>
             <WatchLaterButton filmData={filmItem} />
