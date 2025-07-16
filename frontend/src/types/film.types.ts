@@ -3,7 +3,7 @@ export interface IFilmsItem {
    nameRu: string;
    year: string;
    description: string;
-   filmLength: string;
+   filmLength?: string;
    posterUrl: string;
    isWatchLater?: boolean;
    isDisliked?: boolean;

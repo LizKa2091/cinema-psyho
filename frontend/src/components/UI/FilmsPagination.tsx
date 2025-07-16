@@ -10,7 +10,7 @@ interface IFilmsPaginationProps {
 
 const FilmsPagination: FC<IFilmsPaginationProps> = ({ totalItems, currPage, handlePageChange }) => {
    return (
-      <div>
+      <div data-testid='films-pagination'>
          <Pagination align='center' total={totalItems-1} current={currPage} onChange={handlePageChange} pageSize={38} showSizeChanger={false} />
       </div>
    )
