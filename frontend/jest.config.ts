@@ -16,6 +16,7 @@ const config: Config.InitialOptions = {
    transformIgnorePatterns: [
       '/node_modules/(?!antd)',
    ],
+   collectCoverage: true,
 };
 
 export default config;
