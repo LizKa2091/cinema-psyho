@@ -1,3 +1,13 @@
+![React](https://img.shields.io/badge/React-19.1.0-blue?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-4.9.5-3178C6?logo=typescript)
+![React Query](https://img.shields.io/badge/React_Query-5.75.5-FF4154?logo=react-query)
+![React Hook Form](https://img.shields.io/badge/React_Hook_Form-7.56.2-EC5990?logo=react-hook-form)
+![Ant Design](https://img.shields.io/badge/AntDesign-5.24.9-0170FE?logo=ant-design)
+![Jest](https://img.shields.io/badge/Jest-29.7.0-C21325?logo=jest)
+![Testing Library](https://img.shields.io/badge/Testing_Library-16.3.0-E33332?logo=testing-library)
+![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000?logo=vercel)
+![Coverage](https://img.shields.io/badge/Coverage-85%25-brightgreen)
+
 # 🎬 Cinema Psycho
 Кино-сервис для тех, кто выбирает фильмы по настроению, а не по жанру
 
